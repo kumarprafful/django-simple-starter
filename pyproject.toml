@@ -1,0 +1,55 @@
+[project]
+name = "django-simple-starter"
+version = "0.1.1"
+description = "Django Simple Starter CLI - Scaffold Django projects quickly"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+authors = [
+    {name = "prafful", email = "kumarprafful54@gmail.com"}
+]
+keywords = ["django", "cli", "starter", "scaffold"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+]
+urls = [
+    {homepage = "https://prprafful.github.io/django-simple-starter/"},
+    {repository = "https://github.com/prprafful/django-simple-starter"},
+]
+
+dependencies = [
+    "Django>=5.2,<6.0",
+    "djangorestframework>=3.17",
+    "django-cors-headers>=4.9",
+    "python-decouple>=3.8",
+    "psycopg2-binary>=2.9",
+    "django-phonenumber-field>=8.4",
+    "Pillow>=11",
+    "django-redis>=5.0",
+]
+
+[project.scripts]
+dss = "dss.cli:main"
+
+[build-backend]
+build-backend = "setuptools.build_meta"
+build-system = "setuptools"
+
+[tool.setuptools.packages.find]
+where = ["dss/src"]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7",
+    "pytest-django>=4.12",
+    "black>=25",
+    "ruff>=0.9",
+    "pre-commit>=4",
+]

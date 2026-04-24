@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Django Simple Starter</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a0a;
+            --bg-secondary: #141414;
+            --bg-tertiary: #1e1e1e;
+            --text: #f5f5f5;
+            --text-secondary: #a0a0a0;
+            --accent: #10b981;
+            --accent-hover: #059669;
+            --border: #2a2a2a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        header {
+            padding: 48px 0;
+            text-align: center;
+        }
+
+        .logo {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, var(--accent), #34d399);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .tagline {
+            font-size: 20px;
+            color: var(--text-secondary);
+            margin-bottom: 32px;
+        }
+
+        .install-box {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 48px;
+        }
+
+        .install-box code {
+            display: block;
+            background: var(--bg-tertiary);
+            padding: 16px;
+            border-radius: 8px;
+            font-family: 'SF Mono', Monaco, monospace;
+            font-size: 16px;
+            color: var(--accent);
+            overflow-x: auto;
+        }
+
+        .features {
+            padding: 48px 0;
+        }
+
+        .features h2 {
+            font-size: 24px;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+        }
+
+        .feature-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+        }
+
+        .feature-card h3 {
+            font-size: 16px;
+            margin-bottom: 8px;
+            color: var(--accent);
+        }
+
+        .feature-card p {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .packages {
+            padding: 48px 0;
+        }
+
+        .packages h2 {
+            font-size: 24px;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        .packages-list {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+        }
+
+        .packages-list code {
+            display: grid;
+            gap: 8px;
+            font-family: 'SF Mono', Monaco, monospace;
+            font-size: 14px;
+        }
+
+        footer {
+            padding: 48px 0;
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        footer a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1 class="logo">Django Simple Starter</h1>
+            <p class="tagline">Quickly scaffold Django projects with your preferred setup</p>
+        </header>
+
+        <section class="install">
+            <div class="install-box">
+                <code>pip install django-simple-starter</code>
+            </div>
+        </section>
+
+        <section class="features">
+            <h2>What it creates</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h3>Settings Module</h3>
+                    <p>common, development, preprod, production</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Custom User Model</h3>
+                    <p>UserManager, email auth</p>
+                </div>
+                <div class="feature-card">
+                    <h3>BaseModel</h3>
+                    <p>UUID primary key, timestamps</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Ready for Production</h3>
+                    <p>Redis, CORS, PostgreSQL</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="packages">
+            <h2>Default Packages</h2>
+            <div class="packages-list">
+                <code>
+Django>=5.2,<6.0
+djangorestframework>=3.17
+django-cors-headers>=4.9
+python-decouple>=3.8
+psycopg2-binary>=2.9
+django-phonenumber-field>=8.4
+Pillow>=11
+django-redis>=5.0
+                </code>
+            </div>
+        </section>
+
+        <footer>
+            <p>
+                <a href="https://pypi.org/project/django-simple-starter/">PyPI</a> ·
+                <a href="https://github.com/prprafful/django-simple-starter">GitHub</a>
+            </p>
+        </footer>
+    </div>
+</body>
+</html>
