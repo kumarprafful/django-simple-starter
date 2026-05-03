@@ -52,19 +52,6 @@ python src/manage.py migrate
 python src/manage.py runserver
 ```
 
-## Development
-
-```bash
-# Install locally
-pip install -e .
-
-# Build
-python -m build
-
-# Upload to PyPI
-python -m twine upload dist/*
-```
-
 ## License
 
 MIT

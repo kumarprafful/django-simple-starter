@@ -1,6 +1,6 @@
 [project]
 name = "django-simple-starter"
-version = "0.1.1"
+version = "0.2.0"
 description = "Django Simple Starter CLI - Scaffold Django projects quickly"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -18,21 +18,6 @@ classifiers = [
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
     "Programming Language :: Python :: 3.14",
-]
-urls = [
-    {homepage = "https://prprafful.github.io/django-simple-starter/"},
-    {repository = "https://github.com/prprafful/django-simple-starter"},
-]
-
-dependencies = [
-    "Django>=5.2,<6.0",
-    "djangorestframework>=3.17",
-    "django-cors-headers>=4.9",
-    "python-decouple>=3.8",
-    "psycopg2-binary>=2.9",
-    "django-phonenumber-field>=8.4",
-    "Pillow>=11",
-    "django-redis>=5.0",
 ]
 
 [project.scripts]

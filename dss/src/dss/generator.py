@@ -18,8 +18,10 @@ class DjangoProjectGenerator:
 
     def __init__(self, project_name: str):
         self.project_name = self._slugify(project_name)
+        self.module_name = self.project_name.replace("-", "_")
         self.base_dir = Path.cwd() / self.project_name
-        self.src_dir = self.base_dir / "src" / self.project_name
+        self.src_dir = self.base_dir / "src"
+        self.project_dir = self.src_dir / self.module_name
 
     def _slugify(self, name: str) -> str:
         name = re.sub(r"[^a-zA-Z0-9]", "-", name)
@@ -53,6 +55,7 @@ class DjangoProjectGenerator:
         (self.base_dir).mkdir(parents=True)
         (self.src_dir).mkdir(parents=True)
         (self.src_dir / "users" / "migrations").mkdir(parents=True)
+        (self.project_dir).mkdir(parents=True)
 
     def _create_manage_py(self):
         content = f'''#!/usr/bin/env python
@@ -63,7 +66,7 @@ import sys
 
 def main():
     """Run administrative tasks."""
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', '{self.project_name}.settings.development')
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', '{self.module_name}.settings.development')
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:
@@ -83,20 +86,17 @@ if __name__ == '__main__':
         os.chmod(path, 0o755)
 
     def _create_project_package(self):
-        init_file = self.src_dir / self.project_name / "__init__.py"
-        init_file.parent.mkdir(parents=True)
-        init_file.write_text("")
+        (self.project_dir / "__init__.py").write_text("")
 
         urls_content = f'''from django.contrib import admin
 from django.urls import path
-from {self.project_name}.views import api_root
+from {self.module_name}.views import api_root
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', api_root),
-]
-'''
-        (self.src_dir / self.project_name / "urls.py").write_text(urls_content)
+]'''
+        (self.project_dir / "urls.py").write_text(urls_content)
 
         views_content = f'''from django.http import JsonResponse
 
@@ -104,14 +104,14 @@ urlpatterns = [
 def api_root(request):
     return JsonResponse({{"message": "Welcome to {self.project_name}", "status": "ok"}})
 '''
-        (self.src_dir / self.project_name / "views.py").write_text(views_content)
+        (self.project_dir / "views.py").write_text(views_content)
 
         admin_content = f'''from django.contrib import admin
 
 
-# Register your models here.
+# Register your here.
 '''
-        (self.src_dir / self.project_name / "admin.py").write_text(admin_content)
+        (self.project_dir / "admin.py").write_text(admin_content)
 
         models_content = f'''import uuid
 from django.db import models
@@ -125,7 +125,7 @@ class BaseModel(models.Model):
     class Meta:
         abstract = True
 '''
-        (self.src_dir / self.project_name / "models.py").write_text(models_content)
+        (self.project_dir / "models.py").write_text(models_content)
 
         utils_content = f'''import base64
 import uuid
@@ -135,7 +135,7 @@ def get_random_id(prefix=""):
     encoded = base64.urlsafe_b64encode(uuid.uuid4().bytes)
     return prefix + encoded.rstrip(b"=").decode("ascii")
 '''
-        (self.src_dir / self.project_name / "utils.py").write_text(utils_content)
+        (self.project_dir / "utils.py").write_text(utils_content)
 
         wsgi_content = f'''"""
 WSGI config for {self.project_name} project.
@@ -144,11 +144,11 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', '{self.project_name}.settings.development')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', '{self.module_name}.settings.development')
 
 application = get_wsgi_application()
 '''
-        (self.src_dir / self.project_name / "wsgi.py").write_text(wsgi_content)
+        (self.project_dir / "wsgi.py").write_text(wsgi_content)
 
         asgi_content = f'''"""
 ASGI config for {self.project_name} project.
@@ -157,14 +157,14 @@ import os
 
 from django.core.asgi import get_asgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', '{self.project_name}.settings.development')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', '{self.module_name}.settings.development')
 
 application = get_asgi_application()
 '''
-        (self.src_dir / self.project_name / "asgi.py").write_text(asgi_content)
+        (self.project_dir / "asgi.py").write_text(asgi_content)
 
     def _create_settings_module(self):
-        settings_dir = self.src_dir / self.project_name / "settings"
+        settings_dir = self.project_dir / "settings"
         settings_dir.mkdir(parents=True)
 
         (settings_dir / "__init__.py").write_text("")
@@ -174,7 +174,7 @@ from pathlib import Path
 from corsheaders.defaults import default_headers
 from decouple import config
 
-BASE_DIR = Path(__file__).resolve().parent.parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent.parent.parent
 
 DJANGO_SETTINGS_MODULE = os.environ.get("DJANGO_SETTINGS_MODULE")
 
@@ -214,7 +214,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = '{self.project_name}.urls'
+ROOT_URLCONF = '{self.module_name}.urls'
 
 TEMPLATES = [
     {{
@@ -231,16 +231,16 @@ TEMPLATES = [
     }},
 ]
 
-WSGI_APPLICATION = '{self.project_name}.wsgi.application'
+WSGI_APPLICATION = '{self.module_name}.wsgi.application'
 
 DATABASES = {{
     "default": {{
-        "ENGINE": config("DB_ENGINE"),
-        "NAME": config("DB_NAME"),
-        "USER": config("DB_USER"),
-        "PASSWORD": config("DB_PASSWORD"),
-        "HOST": config("DB_HOST"),
-        "PORT": config("DB_PORT"),
+"ENGINE": config("DB_ENGINE"),
+"NAME": config("DB_NAME"),
+"USER": config("DB_USER"),
+"PASSWORD": config("DB_PASSWORD"),
+"HOST": config("DB_HOST"),
+"PORT": config("DB_PORT"),
     }}
 }}
 
@@ -272,29 +272,29 @@ CORS_ALLOW_HEADERS = (*default_headers,)
 
 CACHES = {{
     "default": {{
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": {{config('REDIS_URL')}},
-        "OPTIONS": {{
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-        }},
+"BACKEND": "django_redis.cache.RedisCache",
+"LOCATION": {{config('REDIS_URL')}},
+"OPTIONS": {{
+    "CLIENT_CLASS": "django_redis.client.DefaultClient",
+}},
     }}
 }}
 '''
         (settings_dir / "common.py").write_text(common_settings)
 
-        dev_settings = f'''from settings.common import *
+        dev_settings = f'''from .common import *
 
 CURRENT_ENV = ENV_DEV
 '''
         (settings_dir / "development.py").write_text(dev_settings)
 
-        preprod_settings = f'''from settings.common import *
+        preprod_settings = f'''from .common import *
 
 CURRENT_ENV = ENV_PREPROD
 '''
         (settings_dir / "preprod.py").write_text(preprod_settings)
 
-        prod_settings = f'''from settings.common import *
+        prod_settings = f'''from .common import *
 
 CURRENT_ENV = ENV_PROD
 DEBUG = False
@@ -323,8 +323,8 @@ DEBUG = False
 from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
 from django.contrib.auth.models import PermissionsMixin
 from django.utils import timezone
-from {self.project_name}.models import BaseModel
-from {self.project_name}.utils import get_random_id
+from {self.module_name}.models import BaseModel
+from {self.module_name}.utils import get_random_id
 
 
 class UserManager(BaseUserManager):
