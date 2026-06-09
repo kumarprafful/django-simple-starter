@@ -1,6 +1,6 @@
 [project]
 name = "django-simple-starter"
-version = "0.2.0"
+version = "0.2.1"
 description = "Django Simple Starter CLI - Scaffold Django projects quickly"
 readme = "README.md"
 requires-python = ">=3.10"
